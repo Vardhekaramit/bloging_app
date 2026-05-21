@@ -6,14 +6,19 @@ class AppStrings {
   static const String enterName = 'Enter Your FullName';
   static const String password = 'Password';
   static const String strLoginSuccess = 'Login Success';
+  static const String strSignUpSuccess = 'SignUp Success';
   static const String strEmail ='Email';
   static const String strReqMail ="Email is required";
   static const String strValidMail ="Enter valid email";
   static const String strReqPass = "Password is required";
+  static const String strReqMob = "Mobile is required";
+  static const String strReqName = "Name is required";
   static const String strValidPass = "Password must be at least 6 characters";
   static const String strForgot = 'Forgot Password';
   static const String strLogin = 'Login';
   static const String strDontAcc = "Don't have an account?";
   static const String strSignUp = "Sign up";
   static const String strCon =  ' Or Continue With';
+  static const String strEnterName =  'Enter your full name';
+  static const String strEnterMob =  'Enter your mobile number';
 }
