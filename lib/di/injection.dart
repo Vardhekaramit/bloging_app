@@ -4,6 +4,10 @@ import 'package:bloging_app/fetures/login/data/remote/login_service.dart';
 import 'package:bloging_app/fetures/login/data/remote/repository_impl.dart';
 import 'package:bloging_app/fetures/login/domain/login_repository.dart';
 import 'package:bloging_app/fetures/login/presentation/bloc/login_bloc.dart';
+import 'package:bloging_app/fetures/sign_up/data/remote/sign_up_repo_impl.dart';
+import 'package:bloging_app/fetures/sign_up/data/remote/sign_up_service.dart';
+import 'package:bloging_app/fetures/sign_up/domain/sign_up_repo.dart';
+import 'package:bloging_app/fetures/sign_up/presentation/bloc/sign_up_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -25,4 +29,14 @@ Future<void> init() async {
 
   // 🔹 Bloc
   sl.registerFactory(() => LoginBloc(sl<LoginRepository>()));
+
+  sl.registerLazySingleton<SignUpService>(
+    () => SignUpService(sl<Dio>(),baseUrl: ApiEndpoints.baseUrl),
+  );
+
+  sl.registerLazySingleton<SignUpRepo>(
+      () => SignUpRepoImpl(signUpService: sl()),
+  );
+
+  sl.registerFactory(() => SignUpBloc(sl<SignUpRepo>()),);
 }

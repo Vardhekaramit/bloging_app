@@ -2,9 +2,12 @@ import 'package:bloging_app/core/constants/app_colors.dart';
 import 'package:bloging_app/core/constants/assets.dart';
 import 'package:bloging_app/core/constants/strings.dart';
 import 'package:bloging_app/core/utils/extension.dart';
+import 'package:bloging_app/di/injection.dart';
 import 'package:bloging_app/fetures/login/presentation/bloc/login_bloc.dart';
 import 'package:bloging_app/fetures/login/presentation/bloc/login_event.dart';
 import 'package:bloging_app/fetures/login/presentation/bloc/login_state.dart';
+import 'package:bloging_app/fetures/sign_up/presentation/bloc/sign_up_bloc.dart';
+import 'package:bloging_app/fetures/sign_up/presentation/sign_up_page.dart';
 import 'package:bloging_app/fetures/widgets/common_btn.dart';
 import 'package:bloging_app/fetures/widgets/common_text_form_field.dart';
 import 'package:bloging_app/utils/responsive.dart';
@@ -57,7 +60,17 @@ class LoginPage extends StatelessWidget {
             ),
 
             // 🔹 Tab Content
-            Expanded(child: TabBarView(children: [LoginView(), Container()])),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  LoginView(),
+                  BlocProvider(
+                    create: (context) => sl<SignUpBloc>(),
+                    child: SignUpPage(),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -65,21 +78,38 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
-  final emailController = TextEditingController();
-  final passController = TextEditingController();
-  bool isLoading = false;
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late TextEditingController emailController;
+
+  late TextEditingController passController;
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginLoadingState) {
-          isLoading = true;
-        }
         if (state is LoginSuccessState) {
           ScaffoldMessenger.of(
             context,
